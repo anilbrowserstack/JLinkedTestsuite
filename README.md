@@ -8,3 +8,7 @@ Java test suite to search for github users and get their stats(email id, persona
 3. In Run configuration set two commandline arguments:
    a. First argument: email id to which the mail will be sent
    b. Page count: The no:of github pages it will search for github users
+
+Change the .classpath to include the following jars:
+- mail-1.4.jar
+- selenium-server-standalone-2.33.0.jar
