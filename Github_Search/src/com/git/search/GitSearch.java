@@ -1,5 +1,6 @@
 package com.git.search;
 
+import java.io.File;
 import java.io.IOException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ public class GitSearch {
 	WebDriver driver = new ChromeDriver();
 	JavascriptExecutor js = null;
 	
-	void githubSearch() throws InterruptedException, IOException{
+	void githubSearch(String emailid, String pc) throws InterruptedException, IOException{
 		driver.get("https://github.com/search?q=location%3Amumbai&type=Users&ref=advsearch&l=");
 		Thread.sleep(1000);
 		if (driver instanceof JavascriptExecutor) {
@@ -18,8 +19,17 @@ public class GitSearch {
 		long count =  (Long) js.executeScript("return $('.gravatar').length");
 		String current_url = driver.getCurrentUrl();
 		System.out.println("Current URL: "+current_url);
+		String cwd = System.getProperty("user.dir");
+		System.out.println("CWD = "+cwd);
+		File file = new File("github_userlinks.txt");
+		if(file.delete()){
+			System.out.println(file.getName() + " is deleted!");
+		}else{
+			System.out.println("Delete operation is failed.");
+		}
 		FileWrite.fileWrite("----------------------------------------------------------\n", "link");
-		for(int pagecount=0;pagecount<2;pagecount++) {
+		//for(int pagecount=0;pagecount<2;pagecount++) {
+		for(int pagecount=0;pagecount<Integer.parseInt(pc);pagecount++) {
 			for(int usercount=0;usercount<count;usercount++) {
 				js.executeScript("return $('.gravatar')["+usercount+"].click()");
 				String name = (String) js.executeScript("return $('.avatared h1 span').text()");
@@ -48,19 +58,20 @@ public class GitSearch {
             	driver.get(current_url);
 				Thread.sleep(1000);
 			}
-		js.executeScript("return $('.next_page').click()");
-		Thread.sleep(5000);
-		current_url = driver.getCurrentUrl();
-		System.out.println("Current URL: "+current_url);
+			if (pagecount+1<Integer.parseInt(pc))
+				js.executeScript("return $('.next_page').click()");
+			Thread.sleep(5000);
+			current_url = driver.getCurrentUrl();
+			System.out.println("Current URL: "+current_url);
 		}
 		Thread.sleep(5000);
 		System.out.println("DONE");
-		SendMail.sendemail();
+		SendMail.sendemail(emailid);
 		FileWrite.fileWrite("----------------------------------------------------------\n", "link");
 		driver.quit();
 	}
 	public static void main(String[] args) throws InterruptedException, IOException{
 		GitSearch obj = new GitSearch();
-		obj.githubSearch();
+		obj.githubSearch(args[0],args[1]);
 	}
 }

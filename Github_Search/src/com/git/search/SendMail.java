@@ -14,7 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendMail {
-	static void sendemail() throws IOException {
+	static void sendemail(String emailid) throws IOException {
 		final String username = "automationbs@gmail.com";
 		final String password = "bsautomation";
  
@@ -36,11 +36,12 @@ public class SendMail {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("automationbs@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("anil@browserstack.com"));
+				//InternetAddress.parse("anil@browserstack.com"));
+				InternetAddress.parse(emailid));
 			message.setSubject("Github User stats:");
 			BufferedReader br = new BufferedReader(new FileReader("github_userlinks.txt"));
-			String s=null;
-			String msg = null;
+			String s="";
+			String msg = "";
 			while((s=br.readLine()) != null){
 				msg+=s;
 				msg+="\n";
