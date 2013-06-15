@@ -16,7 +16,8 @@ public class SearchLinkedIn {
 			js.executeScript("document.getElementById('last').value=\""+list[1]+"\"");
 		}
 		Thread.sleep(1000);
-        driver.findElement(By.className("btn-secondary")).click();
+		driver.findElement(By.xpath(".//*[@id='search']/form/p/input")).click();
+        //driver.findElement(By.className("btn-secondary")).click();
 		long count=(Long) js.executeScript("return document.getElementsByClassName('profile-photo').length");
 		System.out.println("No:of profiles = "+count);
 		for(int result=0;result<count;result++) {
