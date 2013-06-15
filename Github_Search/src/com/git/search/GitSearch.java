@@ -28,23 +28,23 @@ public class GitSearch {
 			System.out.println("Delete operation is failed.");
 		}
 		FileWrite.fileWrite("----------------------------------------------------------\n", "link");
+		String personal_website = "";
+		String email_addr = "";
+		String name = "";
 		//for(int pagecount=0;pagecount<2;pagecount++) {
 		for(int pagecount=0;pagecount<Integer.parseInt(pc);pagecount++) {
 			for(int usercount=0;usercount<count;usercount++) {
 				js.executeScript("return $('.gravatar')["+usercount+"].click()");
-				String name = (String) js.executeScript("return $('.avatared h1 span').text()");
-				FileWrite.fileWrite("Name: "+name,"link");
+				name = (String) js.executeScript("return $('.avatared h1 span').text()");
 				//If email exists
             	long email = (Long) js.executeScript("return document.getElementsByClassName('email').length");
             	if (email > 0) {
-            		String email_addr =(String) js.executeScript("return document.getElementsByClassName('email')[0].text");
-            		FileWrite.fileWrite("Email: "+email_addr+"\n", "link");
+            		email_addr =(String) js.executeScript("return document.getElementsByClassName('email')[0].text");
             	}
             	//If url exists
             	long url = (Long) js.executeScript("return document.getElementsByClassName('url').length");
             	if (url > 0) {
-            		String personal_website =(String) js.executeScript("return document.getElementsByClassName('url')[0].text");
-            		FileWrite.fileWrite("Personal Website: "+personal_website+"\n", "link");
+            		personal_website =(String) js.executeScript("return document.getElementsByClassName('url')[0].text");
             	}
             	//If stats exists
             	long stats = (Long) js.executeScript("return document.getElementsByClassName('stats')[0].getElementsByTagName('strong').length");
@@ -52,7 +52,7 @@ public class GitSearch {
             		String followers =(String) js.executeScript("return document.getElementsByClassName('stats')[0].getElementsByTagName('strong').item(0).innerHTML");
             		String starred =(String) js.executeScript("return document.getElementsByClassName('stats')[0].getElementsByTagName('strong').item(1).innerHTML");
             		String following =(String) js.executeScript("return document.getElementsByClassName('stats')[0].getElementsByTagName('strong').item(2).innerHTML");
-            		FileWrite.fileWrite("Followers: "+followers+"\t"+"Starred: "+starred+"\t"+"Following: "+following+"\n","link");
+            		FileWrite.fileWrite("Name: "+name+","+"Email: "+email_addr+","+"Personal Website: "+personal_website+","+"Followers: "+followers+","+"Starred: "+starred+","+"Following: "+following,"link");
             	}
             	SearchLinkedIn.searchInLinkedIn(name,driver, js);
             	driver.get(current_url);
